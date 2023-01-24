@@ -476,7 +476,7 @@ int main(int argc, char *argv[]) {
     signal(SIGTSTP, sighandler);
 #endif
 
-if (console) {
+    if (console) {
 #ifdef HAVE_CONSOLECHARS
         if (va_system("consolechars -f matrix") != 0) {
             console = 0;
@@ -484,11 +484,13 @@ if (console) {
 #elif defined(HAVE_SETFONT)
         if (va_system("setfont matrix") != 0) {
             console = 0;
+        } else {
+            classic = 0;
         }
 #else
         c_die(" Unable to use both \"setfont\" and \"consolechars\".\n");
 #endif
-}
+    }
     if (has_colors()) {
         start_color();
         /* Add in colors, if available */
@@ -518,7 +520,7 @@ if (console) {
     }
 
     /* Set up values for random number generation */
-    if (classic && !console) {
+    if (classic) {
         /* Half-width kana characters. In the movie they are y-axis flipped, and
          * they appear alongside latin characters and numerals, but this is the
          * closest we can do with a standard unicode set and a single number
